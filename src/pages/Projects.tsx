@@ -11,7 +11,7 @@ export default function Projects() {
   async function load() {
     setLoading(true);
     try {
-      const res = await api.get<Project[]>('/projects');
+      const res = await api.get<Project[]>('/projects/list');
       setProjects(res.data);
     } finally {
       setLoading(false);
@@ -25,14 +25,14 @@ export default function Projects() {
   async function addProject(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
-    await api.post<Project>('/projects', { name, description });
+    await api.post<Project>('/projects/create', { name, description });
     setName('');
     setDescription('');
     await load();
   }
 
   async function remove(id: number) {
-    await api.delete(`/projects/${id}`);
+    await api.delete(`/projects/delete/${id}`);
     await load();
   }
 

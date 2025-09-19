@@ -17,8 +17,8 @@ export default function Timesheets() {
 
   async function load() {
     const [tsRes, prjRes] = await Promise.all([
-      api.get<Timesheet[]>('/timesheets'),
-      api.get<Project[]>('/projects'),
+      api.get<Timesheet[]>('/timesheets/list'),
+      api.get<Project[]>('/projects/list'),
     ]);
     setTimesheets(tsRes.data);
     setProjects(prjRes.data);
@@ -31,7 +31,7 @@ export default function Timesheets() {
   async function addTimesheet(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
-    await api.post<Timesheet>('/timesheets', {
+    await api.post<Timesheet>('/timesheets/create', {
       projectId: projectId as number,
       workDate,
       hours: Number(hours),
@@ -45,7 +45,7 @@ export default function Timesheets() {
   }
 
   async function remove(id: number) {
-    await api.delete(`/timesheets/${id}`);
+    await api.delete(`/timesheets/delete/${id}`);
     await load();
   }
 
